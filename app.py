@@ -1,6 +1,5 @@
 import streamlit as st
 import os, json, joblib
-from openai import OpenAI
 import pandas as pd
 
 st.set_page_config(page_title='Clasificación de Correos Spam', layout='centered')
@@ -60,52 +59,6 @@ if enviar:
         
         st.markdown(f"### Diagnóstico: :{color_alerta}[{resultado_clase}]")
         st.write(f"Algoritmo utilizado: **{algoritmo}**")
-        
-        # Integración opcional con Groq API / OpenAI para dar explicación experta
-        api_key = st.secrets.get('GROQ_API_KEY', os.getenv('GROQ_API_KEY', ''))
-        
-        if api_key:
-            prompt = f'''
-            Actúa como un experto en Seguridad Informática y Especialista en Anti-Phishing.
-            
-            Explica brevemente por qué un correo con el siguiente contenido ha sido catalogado como {resultado_clase}.
-            Proporciona 3 recomendaciones de seguridad inmediatas para el usuario.
-            
-            Contenido del correo:
-            "{correo_texto}"
-            
-            Resultado del modelo:
-            - Clasificación: {resultado_clase}
-            - Modelo actuante: {algoritmo}
-            '''
-            
-            try:
-                client = OpenAI(
-                    api_key=api_key,
-                    base_url="https://api.groq.com/openai/v1"
-                )
-                
-                respuesta = client.chat.completions.create(
-                    model="llama3-8b-8192",
-                    messages=[
-                        {
-                            "role": "system",
-                            "content": "Eres un asesor experto en seguridad de la información y analista de ingeniería social."
-                        },
-                        {
-                            "role": "user",
-                            "content": prompt
-                        }
-                    ]
-                )
-                
-                texto = respuesta.choices[0].message.content
-                st.info(texto)
-                
-            except Exception as e:
-                st.warning(f'Error al conectar con el servicio de IA: {e}')
-        else:
-            st.info('Para obtener recomendaciones automatizadas de seguridad mediante IA, configure su GROQ_API_KEY en los secretos de Streamlit.')
 
 if df is not None:
     st.divider()
