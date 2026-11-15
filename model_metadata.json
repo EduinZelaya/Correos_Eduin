@@ -1,0 +1,6 @@
+{
+    "mejor_modelo_cv": "SVM (con escalado)",
+    "nombre_modelo": "Clasificador de Correos Spam vs Normal",
+    "exactitud_svm": 0.9605,
+    "exactitud_arbol": 0.9605
+}
