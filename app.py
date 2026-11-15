@@ -1,6 +1,7 @@
 import streamlit as st
 import os, json, joblib
 from openai import OpenAI
+import pandas as pd
 
 st.set_page_config(page_title='Clasificación de Correos Spam', layout='centered')
 st.title('Detección de Correos Spam - Eduin Fabricio Zelaya')
